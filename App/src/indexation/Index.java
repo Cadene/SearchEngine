@@ -110,9 +110,6 @@ public class Index {
 	}
 	
 	public String getStrDoc(String id) throws IOException, ClassNotFoundException{
-		System.out.println(this.docFrom.get(id)[0]);
-		System.out.println(this.docFrom.get(id)[1]);
-		System.out.println(this.docFrom.get(id)[2]);
 		RandomAccessFile file = new RandomAccessFile(this.docFrom.get(id)[0], "r");
 		file.seek(Integer.parseInt(this.docFrom.get(id)[1]));
 		byte[] b = new byte[Integer.parseInt(this.docFrom.get(id)[2])];
