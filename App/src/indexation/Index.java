@@ -1,5 +1,6 @@
 package indexation;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
@@ -12,7 +13,7 @@ public class Index {
 	private RandomAccessFile inverted;
 	private HashMap<String, long[]> docs;
 	private HashMap<String, long[]> stems;
-	private HashMap<Document, String> docFrom;
+	private HashMap<String, String[]> docFrom;
 	private Parser parser;
 	private TextRepresenter textRepresenter;
 	
@@ -23,38 +24,122 @@ public class Index {
 		this.parser = parser;
 		this.docs = new HashMap<String, long[]>();
 		this.stems = new HashMap<String, long[]>();
-		this.docFrom = new HashMap<Document, String>();
+		this.docFrom = new HashMap<String, String[]>();
 		this.textRepresenter = textRepresenter; 
 	}
 	
-	public void indexation(String filepath) throws IOException{
-		this.parser.init(filepath);
+	public void indexation(String savepath, String sourcepath) throws IOException, ClassNotFoundException {
+		this.parser.init(sourcepath);
 		Document doc = this.parser.nextDocument();
-		long end = this.index.getFilePointer();
+		
+		String tmpPath = "/tmp/3000693_RI_tmp";
+		File tmpFile = new File(tmpPath);
+		tmpFile.mkdir();
+		tmpFile.deleteOnExit();
+		tmpPath = tmpPath + "/";
+		
+		long endDocFrom = this.index.getFilePointer();
 		while (doc != null) {
-			String text = doc.getText();
-			HashMap<String, Integer> representation = this.textRepresenter.getTextRepresentation(text);
-			long start = end;
-			/* comment stocker une hashmap dans un fichier ? */
-			for (Entry<String,Integer> entry : representation.entrySet()) {
-				this.index.writeChars(entry.getKey());
-				this.index.write(entry.getValue());
+			HashMap<String, Integer> representation = this.textRepresenter.getTextRepresentation(doc.getText());
+			long startDocFrom = endDocFrom;
+			this.index.write(Utility.serialize(representation));
+			endDocFrom = this.index.getFilePointer();
+			long[] docFromValue = {startDocFrom, endDocFrom - startDocFrom};
+			startDocFrom = endDocFrom;
+			this.docs.put(doc.getId(), docFromValue);
+			this.docFrom.put(doc.getId(), doc.get("from").split(";"));
+
+			HashMap<String, Integer> stem;
+			for (Entry<String, Integer> entry : representation.entrySet()){
+				long[] stemsValue = this.stems.get(entry.getKey());
+				RandomAccessFile stemTmp = new RandomAccessFile(tmpPath+entry.getKey(), "rw");
+				if (stemsValue == null) {
+					this.stems.put(entry.getKey(), new long[2]);
+					stem = new HashMap<String, Integer>();
+					tmpFile = new File(tmpPath+entry.getKey());
+					tmpFile.deleteOnExit();
+				}
+				else
+				{
+					stem = (HashMap<String, Integer>)Utility.loadObject(tmpPath+entry.getKey());
+				}
+				stem.put(doc.getId(), entry.getValue());
+				stemTmp.write(Utility.serialize(stem));
+				stemTmp.close();
 			}
-			end = this.index.getFilePointer();
-			long[] docValue = {start, end - start};
-			start = end;
-			docs.put(doc.get("title"), docValue);
 			doc = this.parser.nextDocument();
 		}
+
+		long endStems = this.inverted.getFilePointer();
+		for (Entry<String, long[]> entry : this.stems.entrySet()){
+			RandomAccessFile infile = new RandomAccessFile(tmpPath+entry.getKey(), "r");
+			byte[] b = new byte[(int)infile.length()];
+			infile.read(b);
+			infile.close();
+			long startStems = this.inverted.getFilePointer();
+			this.inverted.write(b);
+			endStems = this.inverted.getFilePointer();
+			long[] stemsValue = {startStems, endStems - startStems};
+			this.stems.put(entry.getKey(), stemsValue); 
+			startStems = endStems;
+		}
+		
+		RandomAccessFile docFromFile = new RandomAccessFile(savepath + "docFrom", "rw");
+		RandomAccessFile docsFile = new RandomAccessFile(savepath + "docs", "rw");
+		RandomAccessFile stemsFile = new RandomAccessFile(savepath + "stems", "rw");
+		docsFile.write(Utility.serialize(docs));
+		docFromFile.write(Utility.serialize(docFrom));
+		stemsFile.write(Utility.serialize(stems));
+		docFromFile.close();
+		docsFile.close();
+		stemsFile.close();
 	}
 	
-	public static void main(String[] args) throws IOException {
-		// String path = "/users/nfs/Etu3/3000693/Documents/RI/TME/";
-		String path = "/Users/remicadene/Documents/DAC/RI/SearchEngine/";
-		Index index = new Index("cisicacm", path, new ParserCISI_CACM(), new Stemmer());
-		String p = path + "cisi/cisi.txt";
-		index.indexation(p);
-		p = path + "cacm/cacm.txt";
-		index.indexation(p);
-	}	
+	public HashMap<String, Integer> getTfsForDoc(String id) throws IOException, ClassNotFoundException{
+		this.index.seek(this.docs.get(id)[0]);
+		byte[] b = new byte[(int)this.docs.get(id)[1]];
+		this.index.read(b);
+		return (HashMap<String, Integer>)Utility.deserialize(b) ; 
+	}
+	
+	public HashMap<String, Integer> getTfsForStem(String id) throws IOException, ClassNotFoundException{
+		this.inverted.seek(this.stems.get(id)[0]);
+		byte[] b = new byte[(int)this.stems.get(id)[1]];
+		this.inverted.read(b);
+		return (HashMap<String, Integer>)Utility.deserialize(b) ; 
+	}
+	
+	public String getStrDoc(String id) throws IOException, ClassNotFoundException{
+		System.out.println(this.docFrom.get(id)[0]);
+		System.out.println(this.docFrom.get(id)[1]);
+		System.out.println(this.docFrom.get(id)[2]);
+		RandomAccessFile file = new RandomAccessFile(this.docFrom.get(id)[0], "r");
+		file.seek(Integer.parseInt(this.docFrom.get(id)[1]));
+		byte[] b = new byte[Integer.parseInt(this.docFrom.get(id)[2])];
+		file.read(b);
+		file.close();
+		return new String(b);
+	}
+	
+	public static void main(String[] args) throws IOException, ClassNotFoundException {
+		String id = "909";
+		String path = "/users/nfs/Etu3/3000693/Documents/RI/SearchEngine/";
+		Index index = new Index("cisi", path, new ParserCISI_CACM(), new Stemmer());
+		if (id.equals("0")) {
+			String sourcepath = path + "cisi/cisi.txt";
+			String savepath = path + "save/";
+			index.indexation(savepath, sourcepath);			
+		}
+		else
+		{
+			index.docFrom = (HashMap<String, String[]>)Utility.loadObject(path+"save/docFrom");
+			index.docs = (HashMap<String, long[]>)Utility.loadObject(path+"save/docs");
+			index.stems = (HashMap<String, long[]>)Utility.loadObject(path+"save/stems");
+			System.out.println(index.getTfsForDoc(id));
+			System.out.println(index.getStrDoc(id));
+			System.out.println(index.getTfsForStem("librarianship").get("909"));
+			System.out.println(index.getTfsForStem("librarianship").get("1"));
+			System.out.println(index.getTfsForStem("west"));
+		}
+	}
 }
