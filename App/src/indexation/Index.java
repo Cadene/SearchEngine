@@ -11,21 +11,35 @@ public class Index {
 	private String name;
 	private RandomAccessFile index;
 	private RandomAccessFile inverted;
+	
+	private Parser parser;
+	private TextRepresenter textRepresenter;
+	
 	private HashMap<String, long[]> docs;
 	private HashMap<String, long[]> stems;
 	private HashMap<String, String[]> docFrom;
-	private Parser parser;
-	private TextRepresenter textRepresenter;
 	
 	public Index(String name, String path, Parser parser, TextRepresenter textRepresenter) throws FileNotFoundException{
 		this.name = name; 
 		this.index = new RandomAccessFile(path+"save/"+name+"_index", "rw");
 		this.inverted = new RandomAccessFile(path+"save/"+name+"_inverted", "rw");
+
 		this.parser = parser;
+		this.textRepresenter = textRepresenter; 
+		
 		this.docs = new HashMap<String, long[]>();
 		this.stems = new HashMap<String, long[]>();
-		this.docFrom = new HashMap<String, String[]>();
-		this.textRepresenter = textRepresenter; 
+		this.docFrom = new HashMap<String, String[]>();	
+	}
+	
+	public Index(String name, String path) throws ClassNotFoundException, IOException{
+		this.name = name;
+		this.index = new RandomAccessFile(path +"save/" + name +"_index", "rw");
+		this.inverted = new RandomAccessFile(path +"save/" + name +"_inverted", "rw");
+		
+		this.docFrom = (HashMap<String, String[]>)Utility.loadObject(path+"save/docFrom");
+		this.docs = (HashMap<String, long[]>)Utility.loadObject(path+"save/docs");
+		this.stems = (HashMap<String, long[]>)Utility.loadObject(path+"save/stems");
 	}
 	
 	public void indexation(String savepath, String sourcepath) throws IOException, ClassNotFoundException {
@@ -121,17 +135,15 @@ public class Index {
 	public static void main(String[] args) throws IOException, ClassNotFoundException {
 		String id = "909";
 		String path = "/users/nfs/Etu3/3000693/Documents/RI/SearchEngine/";
-		Index index = new Index("cisi", path, new ParserCISI_CACM(), new Stemmer());
 		if (id.equals("0")) {
+			Index index = new Index("cisi", path, new ParserCISI_CACM(), new Stemmer());
 			String sourcepath = path + "cisi/cisi.txt";
 			String savepath = path + "save/";
 			index.indexation(savepath, sourcepath);			
 		}
 		else
 		{
-			index.docFrom = (HashMap<String, String[]>)Utility.loadObject(path+"save/docFrom");
-			index.docs = (HashMap<String, long[]>)Utility.loadObject(path+"save/docs");
-			index.stems = (HashMap<String, long[]>)Utility.loadObject(path+"save/stems");
+			Index index = new Index("cisi", path);
 			System.out.println(index.getTfsForDoc(id));
 			System.out.println(index.getStrDoc(id));
 			System.out.println(index.getTfsForStem("librarianship").get("909"));
