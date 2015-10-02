@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.HashMap;
 import java.util.Map.Entry;
+import java.util.Set;
 
 public class Index { 
 	private String name;
@@ -130,6 +131,11 @@ public class Index {
 		file.read(b);
 		file.close();
 		return new String(b);
+	}
+	
+	public Set<String> getListDocsIds()
+	{
+		return this.docs.keySet();
 	}
 	
 	public static void main(String[] args) throws IOException, ClassNotFoundException {

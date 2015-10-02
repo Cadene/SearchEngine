@@ -27,20 +27,18 @@ public class WeighterTfIdf extends Weighter {
 		HashMap<String, Integer> occ = index.getTfsForStem(stem);
 		HashMap<String, Double> tf = new HashMap<String,Double>();
 		for (HashMap.Entry<String, Integer> entry : occ.entrySet()) {
-			Integer idf = index.getTfsForStem(entry.getKey()).size();
-			tf.put(entry.getKey(), (1 + Math.log(entry.getValue())) * idf);
+			tf.put(entry.getKey(), new Double(entry.getValue()));
 		}
 		return tf;
 	}
 
 	@Override
 	public HashMap<String, Double> getWeightsForQuery(HashMap<String, Integer> query) throws ClassNotFoundException, IOException {
-		HashMap<String, Double> tf = new HashMap<String,Double>();
+		HashMap<String, Double> idf = new HashMap<String,Double>();
 		for (HashMap.Entry<String, Integer> entry : query.entrySet()) {
 			/* idf: nb de doc dans lequel apparait le mot */
-			Integer idf = index.getTfsForStem(entry.getKey()).size();
-			tf.put(entry.getKey(), (1 + Math.log(entry.getValue())) * idf);
+			idf.put(entry.getKey(), new Double(index.getTfsForStem(entry.getKey()).size()));		
 		}
-		return tf;
+		return idf;
 	}
 }
