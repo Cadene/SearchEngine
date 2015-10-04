@@ -23,9 +23,9 @@ public class Document {
 	public String getText() {
 		return text;
 	}
-	/*public HashMap<String, String> getOther() {
+	public HashMap<String, String> getOther() {
 		return other;
-	}*/
+	}
 	public String get(String key){
 		return other.get(key);
 	}

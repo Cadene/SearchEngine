@@ -10,17 +10,19 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-public abstract class IRmodel {
+public abstract class IRModel {
 	protected Weighter weighter;
+	private LinkedHashMap<String, Integer> ranking;
 	
-	public IRmodel(Weighter weighter) {
+	public IRModel(Weighter weighter) {
 		this.weighter = weighter;
+		this.ranking = null;
 	}
 
-	public abstract HashMap<String,Double> getScores(HashMap<String,Integer> query) throws Exception;
+	public abstract HashMap<String,Double> processScores(HashMap<String,Integer> query) throws Exception;
 
-	public HashMap<String,Integer> getRanking(HashMap<String, Integer> query) throws Exception{
-		List<Entry<String,Double>> list = new LinkedList<Entry<String,Double>>(getScores(query).entrySet());
+	public HashMap<String,Integer> processRanking(HashMap<String, Integer> query) throws Exception{
+		List<Entry<String,Double>> list = new LinkedList<Entry<String,Double>>(processScores(query).entrySet());
 		Collections.sort(list, new Comparator<Entry<String,Double>>() {
 			@Override
 			public int compare(Entry<String, Double> o1, Entry<String, Double> o2) {
@@ -35,7 +37,14 @@ public abstract class IRmodel {
 			ranking.put(entry.getKey(), i);
 			i = i + 1;
 		}
+		this.ranking = ranking;
 		return ranking;
 	}
+	
+	public HashMap<String,Integer> getRanking(){
+		return this.ranking;
+	}
+	
+	public abstract HashMap<String,Double> getScores();
 }
 

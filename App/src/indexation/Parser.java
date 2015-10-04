@@ -28,7 +28,7 @@ public abstract class Parser implements Serializable{
 		this(begin,"");
 	}
 	
-	Document nextDocument(){
+	public Document nextDocument(){
 		try{
 			Document d=null;
 			String ligne="";

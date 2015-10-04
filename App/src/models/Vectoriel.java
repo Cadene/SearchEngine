@@ -5,14 +5,18 @@ import indexation.Index;
 import java.io.IOException;
 import java.util.HashMap;
 
-public class Vectoriel extends IRmodel {
+public class Vectoriel extends IRModel {
 	
 	boolean normalized;
 	HashMap<String, Double> docsNorm;
+	HashMap<String, Double> scores;
+	HashMap<String, Double> ranks;
 	
 	public Vectoriel(Weighter weighter) {
 		super(weighter);
 		this.normalized = false;
+		this.scores = null;
+		this.ranks = null;
 	}
 	
 	public Vectoriel(Weighter weighter, Index index, boolean normalized) throws ClassNotFoundException, IOException {
@@ -34,7 +38,7 @@ public class Vectoriel extends IRmodel {
 	}
 
 	@Override
-	public HashMap<String, Double> getScores(HashMap<String, Integer> query) throws Exception {
+	public HashMap<String, Double> processScores(HashMap<String, Integer> query) throws Exception {
 		HashMap<String, Double> scores = new HashMap<String, Double>();
 		HashMap<String, Double> wtq = this.weighter.getWeightsForQuery(query);
 		double queryNorm = 0; 
@@ -63,7 +67,12 @@ public class Vectoriel extends IRmodel {
 			}
 		}
 		// TODO Auto-generated method stub
+		this.scores = scores;
 		return scores;
+	}
+	
+	public HashMap<String, Double> getScores(){
+		return this.scores;
 	}
 
 	public static void main(String[] args) throws Exception {
@@ -71,13 +80,13 @@ public class Vectoriel extends IRmodel {
 
 		Index index = new Index("cisi", path);
 		Weighter weighter = new WeighterTfInd(index);
-		IRmodel model = new Vectoriel(weighter, index, true); 
+		IRModel model = new Vectoriel(weighter, index, true); 
 		
 		HashMap<String, Integer> query = new HashMap<String, Integer>();
 		query.put("librarianship", 2);
-		model.getScores(query);
-		System.out.println(model.getScores(query));
-		System.out.println(model.getRanking(query));
+		model.processScores(query);
+		System.out.println(model.processScores(query));
+		System.out.println(model.processRanking(query));
 		System.out.println(index.getStrDoc("407"));
 		System.out.println(index.getTfsForDoc("407"));
 		System.out.println(index.getTfsForDoc("353"));
