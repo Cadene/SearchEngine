@@ -25,6 +25,8 @@ public class WeighterTfInd extends Weighter {
 	@Override
 	public HashMap<String, Double> getDocWeightsForStem(String stem) throws ClassNotFoundException, IOException {
 		HashMap<String, Integer> occ = index.getTfsForStem(stem);
+		if (occ == null)
+			return null;
 		HashMap<String, Double> tf = new HashMap<String,Double>();
 		for (HashMap.Entry<String, Integer> entry : occ.entrySet()) {
 			tf.put(entry.getKey(), new Double(entry.getValue()));

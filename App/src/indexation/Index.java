@@ -118,8 +118,11 @@ public class Index {
 	}
 	
 	public HashMap<String, Integer> getTfsForStem(String id) throws IOException, ClassNotFoundException{
-		this.inverted.seek(this.stems.get(id)[0]);
-		byte[] b = new byte[(int)this.stems.get(id)[1]];
+		long[] stem = this.stems.get(id);
+		if (stem == null)
+			return null;
+		this.inverted.seek(stem[0]);
+		byte[] b = new byte[(int)stem[1]];
 		this.inverted.read(b);
 		return (HashMap<String, Integer>)Utility.deserialize(b) ; 
 	}
@@ -139,13 +142,20 @@ public class Index {
 	}
 	
 	public static void main(String[] args) throws IOException, ClassNotFoundException {
-		String id = "909";
-		String path = "/users/nfs/Etu3/3000693/Documents/RI/SearchEngine/";
+		String id = "0";
+		String path = "/Vrac/3152691/RI/";
+		//String path = "/users/nfs/Etu3/3000693/Documents/RI/SearchEngine/";
 		if (id.equals("0")) {
-			Index index = new Index("cisi", path, new ParserCISI_CACM(), new Stemmer());
+/*			Index index = new Index("cisi", path, new ParserCISI_CACM(), new Stemmer());
 			String sourcepath = path + "cisi/cisi.txt";
 			String savepath = path + "save/";
+			index.indexation(savepath, sourcepath);
+	*/		
+			Index index = new Index("cacm", path, new ParserCISI_CACM(), new Stemmer());
+			String sourcepath = path + "cacm/cacm.txt";
+			String savepath = path + "save/";
 			index.indexation(savepath, sourcepath);			
+
 		}
 		else
 		{

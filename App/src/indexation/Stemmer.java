@@ -16,7 +16,7 @@ import java.util.regex.Pattern;
   * by calling one of the various stem(something) methods.
   */
 
-class Stemmer extends TextRepresenter
+public class Stemmer extends TextRepresenter
 {
 
 	private static final long serialVersionUID = 1L;

@@ -51,18 +51,20 @@ public class Vectoriel extends IRModel {
 		}
 		for (HashMap.Entry<String, Double> entry : wtq.entrySet()){
 			HashMap<String, Double> docWeightsForStem = this.weighter.getDocWeightsForStem(entry.getKey());
-			for (HashMap.Entry<String, Double> entryDocs : docWeightsForStem.entrySet()){
-				if (scores.containsKey(entryDocs.getKey())) {
-					double scoreUpdate = entryDocs.getValue() * entry.getValue();
-					if (this.normalized)
-						scoreUpdate = scoreUpdate / (this.docsNorm.get(entryDocs.getKey()) * queryNorm);
-					scores.put(entryDocs.getKey(), scores.get(entryDocs.getKey()) + scoreUpdate);
-				}
-				else {
-					double scoreUpdate = entryDocs.getValue() * entry.getValue();
-					if (this.normalized)
-						scoreUpdate = scoreUpdate / (this.docsNorm.get(entryDocs.getKey()) * queryNorm);
-					scores.put(entryDocs.getKey(), scoreUpdate);
+			if (docWeightsForStem != null) {			
+				for (HashMap.Entry<String, Double> entryDocs : docWeightsForStem.entrySet()){
+					if (scores.containsKey(entryDocs.getKey())) {
+						double scoreUpdate = entryDocs.getValue() * entry.getValue();
+						if (this.normalized)
+							scoreUpdate = scoreUpdate / (this.docsNorm.get(entryDocs.getKey()) * queryNorm);
+						scores.put(entryDocs.getKey(), scores.get(entryDocs.getKey()) + scoreUpdate);
+					}
+					else {
+						double scoreUpdate = entryDocs.getValue() * entry.getValue();
+						if (this.normalized)
+							scoreUpdate = scoreUpdate / (this.docsNorm.get(entryDocs.getKey()) * queryNorm);
+						scores.put(entryDocs.getKey(), scoreUpdate);
+					}
 				}
 			}
 		}

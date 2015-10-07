@@ -31,7 +31,6 @@ public class EvalIRModel2 {
 					ArrayList<String> ldocs   = new ArrayList<String>();
 					ArrayList<Double> lscores = new ArrayList<Double>();
 					for (HashMap.Entry<String, Integer> entry : ranking.entrySet()) {
-						System.out.println(entry.getKey());
 						ldocs.add(entry.getKey());
 						lscores.add(scores.get(entry.getKey()));
 					}

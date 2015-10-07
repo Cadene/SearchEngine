@@ -22,7 +22,7 @@ public abstract class IRModel {
 	public abstract HashMap<String,Double> processScores(HashMap<String,Integer> query) throws Exception;
 
 	public HashMap<String,Integer> processRanking(HashMap<String, Integer> query) throws Exception{
-		List<Entry<String,Double>> list = new LinkedList<Entry<String,Double>>(processScores(query).entrySet());
+		List<Entry<String,Double>> list = new LinkedList<Entry<String,Double>>(this.processScores(query).entrySet());
 		Collections.sort(list, new Comparator<Entry<String,Double>>() {
 			@Override
 			public int compare(Entry<String, Double> o1, Entry<String, Double> o2) {
