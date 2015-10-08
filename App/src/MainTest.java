@@ -9,6 +9,7 @@ import evaluation.Query;
 import evaluation.QueryParser;
 import evaluation.QueryParserCISI_CACM;
 import models.IRModel;
+import models.LanguageModel;
 import models.Vectoriel;
 import models.Weighter;
 import models.WeighterTfInd;
@@ -20,11 +21,12 @@ public class MainTest {
 
 	public static void main(String[] args) throws Exception {
 		// TODO Auto-generated method stub
-		String path = "/Vrac/3152691/RI/";
-		//String path = "/users/nfs/Etu3/3000693/Documents/RI/SearchEngine/";
+		//String path = "/Vrac/3152691/RI/";
+		String path = "/users/nfs/Etu3/3000693/Documents/RI/SearchEngine/";
 		Index index = new Index("cacm", path);
 		Weighter weighter = new WeighterTfInd(index);
-		IRModel model = new Vectoriel(weighter, index, true); 
+		//IRModel model = new Vectoriel(weighter, index, true);
+		IRModel model = new LanguageModel(weighter, .5); 
 		EvalMeasure measure = new PRMeasure(10);
 		
 		QueryParser queryParser = new QueryParserCISI_CACM();

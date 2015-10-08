@@ -9,14 +9,10 @@ public class Vectoriel extends IRModel {
 	
 	boolean normalized;
 	HashMap<String, Double> docsNorm;
-	HashMap<String, Double> scores;
-	HashMap<String, Double> ranks;
 	
 	public Vectoriel(Weighter weighter) {
 		super(weighter);
 		this.normalized = false;
-		this.scores = null;
-		this.ranks = null;
 	}
 	
 	public Vectoriel(Weighter weighter, Index index, boolean normalized) throws ClassNotFoundException, IOException {
@@ -71,10 +67,6 @@ public class Vectoriel extends IRModel {
 		// TODO Auto-generated method stub
 		this.scores = scores;
 		return scores;
-	}
-	
-	public HashMap<String, Double> getScores(){
-		return this.scores;
 	}
 
 	public static void main(String[] args) throws Exception {

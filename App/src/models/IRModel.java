@@ -13,10 +13,12 @@ import java.util.Map.Entry;
 public abstract class IRModel {
 	protected Weighter weighter;
 	private LinkedHashMap<String, Integer> ranking;
+	protected HashMap<String, Double> scores;
 	
 	public IRModel(Weighter weighter) {
 		this.weighter = weighter;
 		this.ranking = null;
+		this.scores = null;
 	}
 
 	public abstract HashMap<String,Double> processScores(HashMap<String,Integer> query) throws Exception;
@@ -45,6 +47,8 @@ public abstract class IRModel {
 		return this.ranking;
 	}
 	
-	public abstract HashMap<String,Double> getScores();
+	public HashMap<String,Double> getScores(){
+		return this.scores;
+	}
 }
 

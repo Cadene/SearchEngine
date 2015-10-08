@@ -143,8 +143,8 @@ public class Index {
 	
 	public static void main(String[] args) throws IOException, ClassNotFoundException {
 		String id = "0";
-		String path = "/Vrac/3152691/RI/";
-		//String path = "/users/nfs/Etu3/3000693/Documents/RI/SearchEngine/";
+		//String path = "/Vrac/3152691/RI/";
+		String path = "/users/nfs/Etu3/3000693/Documents/RI/SearchEngine/";
 		if (id.equals("0")) {
 /*			Index index = new Index("cisi", path, new ParserCISI_CACM(), new Stemmer());
 			String sourcepath = path + "cisi/cisi.txt";
