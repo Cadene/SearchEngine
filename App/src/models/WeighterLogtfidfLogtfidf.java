@@ -15,17 +15,22 @@ public class WeighterLogtfidfLogtfidf extends Weighter {
 	@Override
 	public HashMap<String, Double> getDocWeightsForDoc(String idDoc) throws ClassNotFoundException, IOException {
 		HashMap<String, Integer> occ = index.getTfsForDoc(idDoc);
-		HashMap<String, Double> tf = new HashMap<String,Double>();
+		HashMap<String, Double> tfidf = new HashMap<String,Double>();
+		if (occ.size() == 0)
+			return tfidf;
 		for (HashMap.Entry<String, Integer> entry : occ.entrySet()) {
-			tf.put(entry.getKey(), new Double(entry.getValue()));
+			Integer idf = index.getTfsForStem(entry.getKey()).size();
+			tfidf.put(entry.getKey(), (1 + Math.log(entry.getValue())) * idf);
 		}
-		return tf;
+		return tfidf;
 	}
 
 	@Override
 	public HashMap<String, Double> getDocWeightsForStem(String stem) throws ClassNotFoundException, IOException {
 		HashMap<String, Integer> occ = index.getTfsForStem(stem);
 		HashMap<String, Double> tfidf = new HashMap<String,Double>();
+		if (occ.size() == 0)
+			return tfidf;
 		for (HashMap.Entry<String, Integer> entry : occ.entrySet()) {
 			Integer idf = index.getTfsForStem(entry.getKey()).size();
 			tfidf.put(entry.getKey(), (1 + Math.log(entry.getValue())) * idf);

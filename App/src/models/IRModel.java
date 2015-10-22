@@ -12,19 +12,25 @@ import java.util.Map.Entry;
 
 public abstract class IRModel {
 	protected Weighter weighter;
-	private LinkedHashMap<String, Integer> ranking;
+	protected LinkedHashMap<String, Double> ranking;
 	protected HashMap<String, Double> scores;
+	protected HashMap<String, Integer> queryForRanking;
+	protected HashMap<String, Integer> queryForScores;
 	
 	public IRModel(Weighter weighter) {
 		this.weighter = weighter;
 		this.ranking = null;
 		this.scores = null;
+		this.queryForRanking = null;
+		this.queryForScores = null;
 	}
 
-	public abstract HashMap<String,Double> processScores(HashMap<String,Integer> query) throws Exception;
-
-	public HashMap<String,Integer> processRanking(HashMap<String, Integer> query) throws Exception{
-		List<Entry<String,Double>> list = new LinkedList<Entry<String,Double>>(this.processScores(query).entrySet());
+	public LinkedHashMap<String, Double> getRanking(HashMap<String, Integer> query) throws Exception{
+		if (this.queryForRanking == query && this.ranking != null){
+			return this.ranking;
+		}
+		
+		List<Entry<String,Double>> list = new LinkedList<Entry<String,Double>>(this.getScores(query).entrySet());
 		Collections.sort(list, new Comparator<Entry<String,Double>>() {
 			@Override
 			public int compare(Entry<String, Double> o1, Entry<String, Double> o2) {
@@ -32,23 +38,27 @@ public abstract class IRModel {
 			}
 		});
 
-		LinkedHashMap<String, Integer> ranking = new LinkedHashMap<String,Integer>();
-		int i = 0;
+		this.ranking = new LinkedHashMap<String, Double>();
 		for (Iterator<Entry<String, Double>> it = list.iterator(); it.hasNext();) {
 			Map.Entry<String,Double> entry = (Entry<String, Double>) it.next();
-			ranking.put(entry.getKey(), i);
-			i = i + 1;
+			this.ranking.put(entry.getKey(), entry.getValue());
 		}
-		this.ranking = ranking;
-		return ranking;
-	}
-	
-	public HashMap<String,Integer> getRanking(){
+		
+		for (String doc : weighter.getListDocsIds())
+		{
+			if (!this.ranking.containsKey(doc))
+				this.ranking.put(doc, 0.0);
+		}
+		
 		return this.ranking;
 	}
 	
-	public HashMap<String,Double> getScores(){
+	public HashMap<String,Double> getScores(HashMap<String, Integer> query) throws Exception
+	{
+		if (this.queryForScores != query || this.scores == null)
+			processScores(query);
 		return this.scores;
-	}
+	};
+	
+	protected abstract void processScores(HashMap<String, Integer> query) throws Exception;
 }
-

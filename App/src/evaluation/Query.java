@@ -20,9 +20,11 @@ public class Query extends Document{
 		super(id, text, other);
 		this.relevants = new HashMap<String, Double>(); 
 	}
+	
 	Query(String id,String text){
 		this(id,text,new HashMap<String,String>());
 	}
+	
 	Query(String id){
 		this(id,"");
 	}
