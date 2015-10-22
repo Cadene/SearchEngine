@@ -1,5 +1,6 @@
 package models;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -24,7 +25,9 @@ public abstract class IRModel {
 		this.queryForRanking = null;
 		this.queryForScores = null;
 	}
-
+	
+	public abstract void setParameters(double... parameters);
+	
 	public LinkedHashMap<String, Double> getRanking(HashMap<String, Integer> query) throws Exception{
 		if (this.queryForRanking == query && this.ranking != null){
 			return this.ranking;

@@ -15,6 +15,7 @@ public class EvalIRModel {
 	private TextRepresenter stemmer;
 	private ArrayList<Double> mean;
 	private ArrayList<Double> std;
+	private double evalValue;
 	
 	public EvalIRModel(IRModel model, EvalMeasure measure, ArrayList<Query> queries, TextRepresenter stemmer) {
 		this.model = model;
@@ -23,6 +24,10 @@ public class EvalIRModel {
 		this.stemmer = stemmer;
 	}
 
+	public double getEvalValue() {
+		return this.evalValue;
+	}
+	
 	public ArrayList<Double> getMean() {
 		return this.mean;
 	}
@@ -81,5 +86,11 @@ public class EvalIRModel {
 		for (int j = 0; j < res.size(); j++){
 			this.std.set(j, Math.sqrt(this.std.get(j)));
 		}
+		
+		this.evalValue = 0;
+		for (double s : this.mean){
+			this.evalValue += s;
+		}
+		this.evalValue /= this.mean.size();
 	}
 }

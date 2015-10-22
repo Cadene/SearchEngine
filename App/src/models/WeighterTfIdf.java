@@ -40,7 +40,7 @@ public class WeighterTfIdf extends Weighter {
 	public HashMap<String, Double> getWeightsForQuery(HashMap<String, Integer> query) throws ClassNotFoundException, IOException {
 		HashMap<String, Double> idf = new HashMap<String,Double>();
 		for (String term : query.keySet()) {
-			idf.put(term, new Double(index.getTfsForStem(term).size()));
+			idf.put(term, Math.log(index.getListDocsIds().size() / (1 + index.getTfsForStem(term).size())) );
 		}
 		return idf;
 	}

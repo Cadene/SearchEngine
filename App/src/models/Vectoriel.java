@@ -70,5 +70,9 @@ public class Vectoriel extends IRModel {
 		System.out.println(index.getStrDoc("407"));
 		System.out.println(index.getTfsForDoc("407"));
 		System.out.println(index.getTfsForDoc("353"));
+	}
+
+	@Override
+	public void setParameters(double... parameters) {
 	}	
 }

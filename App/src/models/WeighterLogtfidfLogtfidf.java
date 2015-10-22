@@ -19,7 +19,7 @@ public class WeighterLogtfidfLogtfidf extends Weighter {
 		if (occ.size() == 0)
 			return tfidf;
 		for (HashMap.Entry<String, Integer> entry : occ.entrySet()) {
-			Integer idf = index.getTfsForStem(entry.getKey()).size();
+			double idf = Math.log(index.getListDocsIds().size() / (1 + index.getTfsForStem(entry.getKey()).size()));
 			tfidf.put(entry.getKey(), (1 + Math.log(entry.getValue())) * idf);
 		}
 		return tfidf;
@@ -32,7 +32,7 @@ public class WeighterLogtfidfLogtfidf extends Weighter {
 		if (occ.size() == 0)
 			return tfidf;
 		for (HashMap.Entry<String, Integer> entry : occ.entrySet()) {
-			Integer idf = index.getTfsForStem(entry.getKey()).size();
+			double idf = Math.log(index.getListDocsIds().size() / (1 + index.getTfsForStem(entry.getKey()).size()));
 			tfidf.put(entry.getKey(), (1 + Math.log(entry.getValue())) * idf);
 		}
 		return tfidf;
@@ -42,7 +42,7 @@ public class WeighterLogtfidfLogtfidf extends Weighter {
 	public HashMap<String, Double> getWeightsForQuery(HashMap<String, Integer> query) throws ClassNotFoundException, IOException {
 		HashMap<String, Double> tfidf = new HashMap<String,Double>();
 		for (HashMap.Entry<String, Integer> entry : query.entrySet()) {
-			Integer idf = index.getTfsForStem(entry.getKey()).size();
+			double idf = Math.log(index.getListDocsIds().size() / (1 + index.getTfsForStem(entry.getKey()).size()));
 			tfidf.put(entry.getKey(), (1 + Math.log(entry.getValue())) * idf);
 		}
 		return tfidf;

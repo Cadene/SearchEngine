@@ -70,4 +70,10 @@ public class IRWithRandomWalk extends IRModel {
 		}
 		this.scores = this.walker.walk(sousPred, sousSucc);
 	}
+
+	@Override
+	public void setParameters(double... parameters) {
+		this.nSeeds = (int) parameters[0];
+		this.nIn = (int) parameters[1];
+	}
 }

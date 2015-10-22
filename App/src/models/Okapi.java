@@ -26,7 +26,7 @@ public class Okapi extends IRModel {
 	public Okapi(Weighter weighter) throws ClassNotFoundException, IOException {
 		this(weighter, 1.5, 0.75);
 	}
-
+	
 	@Override
 	public void processScores(HashMap<String, Integer> query)
 			throws Exception {
@@ -48,5 +48,11 @@ public class Okapi extends IRModel {
 				this.scores.put(doc, this.scores.get(doc) + pIdf * ((this.k + 1) * tf) / (this.k * ((1-this.b) + this.b * weighter.getSumWeightsForDocInCorpus(doc) / this.l) + tf));
 			}
 		}
+	}
+
+	@Override
+	public void setParameters(double... parameters) {
+		this.k = parameters[0];
+		this.b = parameters[1];
 	}
 }

@@ -132,7 +132,7 @@ public class MainTest {
 		//System.out.println(evalModel.getStd());
 		
 		Weighter weighterLangue = new WeighterTfTf(index);
-		IRModel modelLangue = new LanguageModel(weighterLangue, .5);
+		IRModel modelLangue = new LanguageModel(weighterLangue, .08);
 		EvalIRModel evalModelLangue = new EvalIRModel(modelLangue, measure, queries, stemmer);
 		evalModelLangue.eval();
 		System.out.println("modele de Langue");

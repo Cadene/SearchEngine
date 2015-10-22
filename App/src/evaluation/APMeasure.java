@@ -16,8 +16,6 @@ public class APMeasure extends EvalMeasure{
 			return toRet;
 		}
 		
-		int debugCountRelevants = 0;
-		
 		int nb_matchs = 0;
 		Double rslt = 0.0;
 		
@@ -25,19 +23,12 @@ public class APMeasure extends EvalMeasure{
 			String id_doc = l.getDocs().get(i);
 			boolean docIsRel = l.getQuery().isRelevant(id_doc);
 			if (docIsRel) {
-				debugCountRelevants++;
 				nb_matchs++;
 				double precision_i = nb_matchs * 1. / (i+1);
 				rslt += precision_i;
 			}
 		}
 		toRet.add(rslt/nb_relevants);
-		if (debugCountRelevants != nb_relevants)
-		{
-			System.out.println("--");
-			System.out.println(debugCountRelevants);
-			System.out.println(nb_relevants);
-		}
 		
 		return toRet;
 	}

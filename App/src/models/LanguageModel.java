@@ -64,4 +64,9 @@ public class LanguageModel extends IRModel {
 		}
 		*/
 	}
+
+	@Override
+	public void setParameters(double... parameters) {
+		this.lamb = parameters[0];
+	}
 }
