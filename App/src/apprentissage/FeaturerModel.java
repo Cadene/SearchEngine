@@ -4,6 +4,7 @@ import indexation.Stemmer;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 import models.IRModel;
 
@@ -21,8 +22,8 @@ public class FeaturerModel extends Featurer {
 	@Override
 	public ArrayList<Double> getFeatures(String idDoc, String query) throws Exception {
 		HashMap<String, Integer> quStems = this.stemmer.getTextRepresentation(query);
-		HashMap<String, Integer> ranking = this.model.processRanking(quStems);
-		HashMap<String, Double> scores = this.model.getScores();
+		LinkedHashMap<String, Double> ranking = this.model.getRanking(quStems);
+		HashMap<String, Double> scores = this.model.getScores(quStems);
 		
 		// /!\ Est-ce toujours retourné dans le même ordre ?
 		//     Sinon les features n'ont aucun sens
