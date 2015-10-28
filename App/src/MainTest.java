@@ -11,6 +11,7 @@ import evaluation.PRMeasure;
 import evaluation.Query;
 import evaluation.QueryParser;
 import evaluation.QueryParserCISI_CACM;
+import featurer.FeaturerList;
 import models.IRModel;
 import models.IRWithRandomWalk;
 import models.LanguageModel;
@@ -160,6 +161,8 @@ public class MainTest {
 		System.out.println("modele HITS");
 		System.out.println(evalModelHITS.getMean());
 		//System.out.println(evalModelPageRank.getStd());
+		
+		//IRModel lineaire = new MetamodelLineaire(weighterTfTf, stemmer, FeaturerList featurerList, int tmax, double learningRate, double l2);
 	}
 
 }

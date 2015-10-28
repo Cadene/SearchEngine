@@ -36,7 +36,7 @@ public class EvalIRModel {
 		return this.std;
 	}
 	
-	public void eval() throws Exception {
+	public double eval() throws Exception {
 		ArrayList<ArrayList<Double>> rslt = new ArrayList<ArrayList<Double>>();
 		for (int id_qu = 0; id_qu < this.queries.size(); id_qu++) {
 			Query query = this.queries.get(id_qu);
@@ -92,5 +92,6 @@ public class EvalIRModel {
 			this.evalValue += s;
 		}
 		this.evalValue /= this.mean.size();
+		return this.evalValue;
 	}
 }

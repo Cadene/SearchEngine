@@ -41,8 +41,7 @@ public class GridSearch {
 		for (double[] parameters : listParameters){
 			this.model.setParameters(parameters);
 			EvalIRModel evalModel = new EvalIRModel(this.model, this.mesure, this.queries, this.stemmer);
-			evalModel.eval();
-			double score = evalModel.getEvalValue();
+			double score = evalModel.eval();
 			
 			for (double s : evalModel.getMean()){
 				score += s;
