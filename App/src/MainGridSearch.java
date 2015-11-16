@@ -30,10 +30,10 @@ public class MainGridSearch {
 		QueryParser queryParser = new QueryParserCISI_CACM();
 		TextRepresenter stemmer = new Stemmer();
 		
-		Index index = new Index("cacm", path);
-		queryParser.init(path+"cacm/cacm.qry", path+"cacm/cacm.rel");
-		//Index index = new Index("cisi", path);
-		//queryParser.init(path+"cisi/cisi.qry", path+"cisi/cisi.rel");
+		//Index index = new Index("cacm", path);
+		//queryParser.init(path+"cacm/cacm.qry", path+"cacm/cacm.rel");
+		Index index = new Index("cisi", path);
+		queryParser.init(path+"cisi/cisi.qry", path+"cisi/cisi.rel");
 		
 		Query query = queryParser.nextQuery();
 		ArrayList<Query> queries = new ArrayList<Query>();

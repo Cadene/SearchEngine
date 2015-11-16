@@ -45,8 +45,8 @@ public class Index {
 		System.out.println("Loading index from "+ path + "save/" + name);
 		
 		this.name = name;
-		this.index = new RandomAccessFile(path +"save/" + name +"/index", "rw");
-		this.inverted = new RandomAccessFile(path +"save/" + name +"/inverted", "rw");
+		this.index = new RandomAccessFile(path +"save/" + name +"/index", "r");
+		this.inverted = new RandomAccessFile(path +"save/" + name +"/inverted", "r");
 		
 		this.docFrom = (HashMap<String, String[]>)Utility.loadObject(path+"save/" + name + "/docFrom");
 		this.docs = (HashMap<String, long[]>)Utility.loadObject(path+"save/" + name + "/docs");
