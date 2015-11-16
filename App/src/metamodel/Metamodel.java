@@ -2,15 +2,15 @@ package metamodel;
 
 import models.IRModel;
 import models.Weighter;
-import featurer.FeaturerList;
+import featurer.Featurer;
 
 public abstract class Metamodel extends IRModel{
 	
-	protected FeaturerList featurerList;
+	protected Featurer featurer;
 	
-	public Metamodel(Weighter weighter, FeaturerList featurerList) {
+	public Metamodel(Weighter weighter, Featurer featurer) {
 		super(weighter);
-		this.featurerList = featurerList;
+		this.featurer = featurer;
 	}
 
 }

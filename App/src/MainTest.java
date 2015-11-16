@@ -11,7 +11,13 @@ import evaluation.PRMeasure;
 import evaluation.Query;
 import evaluation.QueryParser;
 import evaluation.QueryParserCISI_CACM;
+import featurer.Featurer;
+import featurer.FeaturerDocSum;
+import featurer.FeaturerDocWalkRank;
 import featurer.FeaturerList;
+import featurer.FeaturerModel;
+import featurer.FeaturerQuerySum;
+import metamodel.MetamodelLineaire;
 import models.IRModel;
 import models.IRWithRandomWalk;
 import models.LanguageModel;
@@ -131,7 +137,7 @@ public class MainTest {
 		System.out.println("modele Vectoriel LogTfIdf-LogTfIdf normalized");
 		System.out.println(evalModelVectLogtfidfLogtfidf2.getMean());
 		//System.out.println(evalModel.getStd());
-		
+
 		Weighter weighterLangue = new WeighterTfTf(index);
 		IRModel modelLangue = new LanguageModel(weighterLangue, .08);
 		EvalIRModel evalModelLangue = new EvalIRModel(modelLangue, measure, queries, stemmer);
@@ -147,7 +153,8 @@ public class MainTest {
 		System.out.println("modele Okapi");
 		System.out.println(evalModelOkapi.getMean());
 		//System.out.println(evalModelOkapi.getStd());
-		
+
+		/*
 		IRModel pageRank = new IRWithRandomWalk(weighterOkapi, modelOkapi, new PageRank(.2, 1000), index.getPred(), index.getSucc(), 10, 5);
 		EvalIRModel evalModelPageRank = new EvalIRModel(pageRank, measure, queries, stemmer);
 		evalModelPageRank.eval();
@@ -161,8 +168,24 @@ public class MainTest {
 		System.out.println("modele HITS");
 		System.out.println(evalModelHITS.getMean());
 		//System.out.println(evalModelPageRank.getStd());
-		
-		//IRModel lineaire = new MetamodelLineaire(weighterTfTf, stemmer, FeaturerList featurerList, int tmax, double learningRate, double l2);
+		*/
+		ArrayList<Featurer> list = new ArrayList<Featurer>();
+		list.add(new FeaturerModel(modelVectTfIdf2));
+		list.add(new FeaturerModel(modelVectTfTf2));
+		//list.add(new FeaturerModel(modelLangue));
+		list.add(new FeaturerModel(modelOkapi));
+		list.add(new FeaturerDocSum(weighterVectTfInd1));
+		//list.add(new FeaturerDocWalkRank(new PageRank(.2, 1000), index.getPred(), index.getSucc()));
+		//list.add(new FeaturerQuerySum(weighterVectTfInd1));
+		//list.add(new FeaturerQuerySum(weighterVectTfIdf1));
+		Featurer featurer = new FeaturerList(list);
+		Weighter weighterLineaire = new WeighterTfIdf(index);
+		MetamodelLineaire modelLineaire = new MetamodelLineaire(weighterLineaire, stemmer, featurer, 1000000, 0.0000001, 0);
+		modelLineaire.train(queries);
+		EvalIRModel evalModelLineaire = new EvalIRModel(modelLineaire, measure, queries, stemmer);
+		evalModelLineaire.eval();
+		System.out.println("modele Lineaire");
+		System.out.println(evalModelLineaire.getMean());
 	}
 
 }

@@ -1,5 +1,6 @@
 package featurer;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -12,10 +13,10 @@ public abstract class QueryFeaturer extends Featurer {
 		this.featuresForQuery = new HashMap<HashMap<String, Integer>, ArrayList<Double>>();
 	}
 
-	public abstract void buildFeatures(HashMap<String, Integer> query);
+	public abstract void buildFeatures(HashMap<String, Integer> query) throws ClassNotFoundException, IOException;
 	
 	@Override
-	public ArrayList<Double> getFeatures(String idDoc, HashMap<String, Integer> query){
+	public ArrayList<Double> getFeatures(String idDoc, HashMap<String, Integer> query) throws ClassNotFoundException, IOException{
 		if (! this.featuresForQuery.containsKey(query)){
 			this.buildFeatures(query);
 		}
