@@ -28,7 +28,10 @@ public class LanguageModel extends IRModel {
 				if (!this.scores.containsKey(doc)){
 					this.scores.put(doc, 0.0);
 				}
-				this.scores.put(doc, this.scores.get(doc) + wtq.get(term) * Math.log(this.lamb * pdt + (1-this.lamb) * pct));
+				double score = this.lamb * pdt + (1-this.lamb) * pct;
+				if (score > 0){
+					this.scores.put(doc, this.scores.get(doc) + wtq.get(term) * Math.log(score));
+				}
 			}
 		}
 		

@@ -20,7 +20,7 @@ public class WeighterLogtfidfLogtfidf extends Weighter {
 			return tfidf;
 		for (HashMap.Entry<String, Integer> entry : occ.entrySet()) {
 			double idf = Math.log(index.getListDocsIds().size() / (1 + index.getTfsForStem(entry.getKey()).size()));
-			tfidf.put(entry.getKey(), (1 + Math.log(entry.getValue())) * idf);
+			tfidf.put(entry.getKey(), (1. + Math.log(entry.getValue())) * idf);
 		}
 		return tfidf;
 	}
@@ -31,8 +31,8 @@ public class WeighterLogtfidfLogtfidf extends Weighter {
 		HashMap<String, Double> tfidf = new HashMap<String,Double>();
 		if (occ.size() == 0)
 			return tfidf;
+		double idf = Math.log(index.getListDocsIds().size() / (1 + index.getTfsForStem(stem).size()));
 		for (HashMap.Entry<String, Integer> entry : occ.entrySet()) {
-			double idf = Math.log(index.getListDocsIds().size() / (1 + index.getTfsForStem(entry.getKey()).size()));
 			tfidf.put(entry.getKey(), (1 + Math.log(entry.getValue())) * idf);
 		}
 		return tfidf;

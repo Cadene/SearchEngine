@@ -38,11 +38,12 @@ public class Okapi extends IRModel {
 		for (HashMap.Entry<String, Integer> q : query.entrySet()){
 			String stem = q.getKey();
 			HashMap<String, Double> docsForStem = weighter.getDocWeightsForStem(q.getKey());
+			int df = docsForStem.size();
 			for (HashMap.Entry<String, Double> d : docsForStem.entrySet()){
 				String doc = d.getKey();
 				tf = weighter.getDocWeightsForDoc(doc).get(stem);
-				idf = docsForStem.get(doc);
-				pIdf = Math.max(0, Math.log((this.n - idf + 0.5) / (idf + 0.5)));
+				//df = docsForStem.get(doc);
+				pIdf = Math.max(0, Math.log((this.n - df + 0.5) / (df + 0.5)));
 				if (! this.scores.containsKey(doc))
 					this.scores.put(doc, 0.);
 				this.scores.put(doc, this.scores.get(doc) + pIdf * ((this.k + 1) * tf) / (this.k * ((1-this.b) + this.b * weighter.getSumWeightsForDocInCorpus(doc) / this.l) + tf));

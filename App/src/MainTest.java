@@ -40,11 +40,14 @@ public class MainTest {
 		String path = "/Vrac/3152691/RI/";
 		//String path = "/users/nfs/Etu3/3000693/Documents/RI/SearchEngine/";
 	
-		//EvalMeasure measure = new PRMeasure(5);
+		//EvalMeasure measure = new PRMeasure(10);
 		EvalMeasure measure = new APMeasure();
 		
 		Index index = new Index("cacm", path);
 		//Index index = new Index("cisi", path);
+		
+		double paramLangueCACM = 0.8;
+		double paramLangue = paramLangueCACM;
 		
 		QueryParser queryParser = new QueryParserCISI_CACM();
 		TextRepresenter stemmer = new Stemmer();
@@ -139,7 +142,7 @@ public class MainTest {
 		//System.out.println(evalModel.getStd());
 
 		Weighter weighterLangue = new WeighterTfTf(index);
-		IRModel modelLangue = new LanguageModel(weighterLangue, .08);
+		IRModel modelLangue = new LanguageModel(weighterLangue, paramLangue);
 		EvalIRModel evalModelLangue = new EvalIRModel(modelLangue, measure, queries, stemmer);
 		evalModelLangue.eval();
 		System.out.println("modele de Langue");
@@ -147,14 +150,13 @@ public class MainTest {
 		//System.out.println(evalModelLangue.getStd());
 		
 		Weighter weighterOkapi = new WeighterTfIdf(index);
-		IRModel modelOkapi = new Okapi(weighterOkapi); // parametres k et b
+		IRModel modelOkapi = new Okapi(weighterOkapi, 1.9, 0.73); // parametres k et b
 		EvalIRModel evalModelOkapi = new EvalIRModel(modelOkapi, measure, queries, stemmer);
 		evalModelOkapi.eval();
 		System.out.println("modele Okapi");
 		System.out.println(evalModelOkapi.getMean());
 		//System.out.println(evalModelOkapi.getStd());
 
-		/*
 		IRModel pageRank = new IRWithRandomWalk(weighterOkapi, modelOkapi, new PageRank(.2, 1000), index.getPred(), index.getSucc(), 10, 5);
 		EvalIRModel evalModelPageRank = new EvalIRModel(pageRank, measure, queries, stemmer);
 		evalModelPageRank.eval();
@@ -168,16 +170,16 @@ public class MainTest {
 		System.out.println("modele HITS");
 		System.out.println(evalModelHITS.getMean());
 		//System.out.println(evalModelPageRank.getStd());
-		*/
+
 		ArrayList<Featurer> list = new ArrayList<Featurer>();
 		list.add(new FeaturerModel(modelVectTfIdf2));
 		list.add(new FeaturerModel(modelVectTfTf2));
-		//list.add(new FeaturerModel(modelLangue));
+		list.add(new FeaturerModel(modelLangue));
 		list.add(new FeaturerModel(modelOkapi));
 		list.add(new FeaturerDocSum(weighterVectTfInd1));
-		//list.add(new FeaturerDocWalkRank(new PageRank(.2, 1000), index.getPred(), index.getSucc()));
-		//list.add(new FeaturerQuerySum(weighterVectTfInd1));
-		//list.add(new FeaturerQuerySum(weighterVectTfIdf1));
+		list.add(new FeaturerDocWalkRank(new PageRank(.2, 1000), index.getPred(), index.getSucc()));
+		list.add(new FeaturerQuerySum(weighterVectTfInd1));
+		list.add(new FeaturerQuerySum(weighterVectTfIdf1));
 		Featurer featurer = new FeaturerList(list);
 		Weighter weighterLineaire = new WeighterTfIdf(index);
 		MetamodelLineaire modelLineaire = new MetamodelLineaire(weighterLineaire, stemmer, featurer, 1000000, 0.0000001, 0);
