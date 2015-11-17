@@ -48,10 +48,10 @@ public class MainTest {
 		double paramLangueCACM = 0.8;
 		double paramOkapi_k_CACM = 0;
 		double paramOkapi_b_CACM = 0;
-		
-		double paramOkapi_k_CISI = 0;
-		double paramOkapi_b_CISI = 0;
-		double paramLangueCISI = 0.8;
+
+		double paramLangueCISI = 0.03;
+		double paramOkapi_k_CISI = 1.8;
+		double paramOkapi_b_CISI = 0.8;
 		
 		double paramLangue = paramLangueCACM;
 		double paramOkapi_k = paramOkapi_k_CACM;
@@ -204,6 +204,5 @@ public class MainTest {
 		System.out.println("modele Lineaire");
 		System.out.println(evalModelLineaire.getMean());
 	}
-
 }
 
