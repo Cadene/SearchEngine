@@ -38,7 +38,6 @@ public class MainTest {
 	public static void main(String[] args) throws Exception {
 		// TODO Auto-generated method stub
 		String path = "/Vrac/3152691/RI/";
-		//String path = "/users/nfs/Etu3/3000693/Documents/RI/SearchEngine/";
 	
 		//EvalMeasure measure = new PRMeasure(10);
 		EvalMeasure measure = new APMeasure();
@@ -47,12 +46,28 @@ public class MainTest {
 		//Index index = new Index("cisi", path);
 		
 		double paramLangueCACM = 0.8;
+		double paramOkapi_k_CACM = 0;
+		double paramOkapi_b_CACM = 0;
+		
+		double paramOkapi_k_CISI = 0;
+		double paramOkapi_b_CISI = 0;
+		double paramLangueCISI = 0.8;
+		
 		double paramLangue = paramLangueCACM;
+		double paramOkapi_k = paramOkapi_k_CACM;
+		double paramOkapi_b = paramOkapi_b_CACM;
+		/*
+		double paramLangue = paramLangueCISI;
+		double paramOkapi_k = paramOkapi_k_CISI;
+		double paramOkapi_b = paramOkapi_b_CISI;
+		*/
 		
 		QueryParser queryParser = new QueryParserCISI_CACM();
 		TextRepresenter stemmer = new Stemmer();
+		
 		queryParser.init(path+"cacm/cacm.qry", path+"cacm/cacm.rel");
 		//queryParser.init(path+"cisi/cisi.qry", path+"cisi/cisi.rel");
+		
 		Query query = queryParser.nextQuery();
 		ArrayList<Query> queries = new ArrayList<Query>();
 		while (query != null) {
