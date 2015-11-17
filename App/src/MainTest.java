@@ -39,15 +39,15 @@ public class MainTest {
 		// TODO Auto-generated method stub
 		String path = "/Vrac/3152691/RI/";
 	
-		//EvalMeasure measure = new PRMeasure(10);
-		EvalMeasure measure = new APMeasure();
+		EvalMeasure measure = new PRMeasure(10);
+		//EvalMeasure measure = new APMeasure();
 		
 		Index index = new Index("cacm", path);
 		//Index index = new Index("cisi", path);
 		
-		double paramLangueCACM = 0.8;
-		double paramOkapi_k_CACM = 0;
-		double paramOkapi_b_CACM = 0;
+		double paramLangueCACM = 0.11;
+		double paramOkapi_k_CACM = 1.9;
+		double paramOkapi_b_CACM = 0.7;
 
 		double paramLangueCISI = 0.03;
 		double paramOkapi_k_CISI = 1.8;
@@ -197,7 +197,7 @@ public class MainTest {
 		list.add(new FeaturerQuerySum(weighterVectTfIdf1));
 		Featurer featurer = new FeaturerList(list);
 		Weighter weighterLineaire = new WeighterTfIdf(index);
-		MetamodelLineaire modelLineaire = new MetamodelLineaire(weighterLineaire, stemmer, featurer, 1000000, 0.0000001, 0);
+		MetamodelLineaire modelLineaire = new MetamodelLineaire(weighterLineaire, stemmer, featurer, 1000000, 0.00001, 0);
 		modelLineaire.train(queries);
 		EvalIRModel evalModelLineaire = new EvalIRModel(modelLineaire, measure, queries, stemmer);
 		evalModelLineaire.eval();
