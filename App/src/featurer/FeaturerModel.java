@@ -13,7 +13,6 @@ public class FeaturerModel extends DocAndQueryFeaturer {
 	public FeaturerModel(IRModel model) {
 		super();
 		this.model = model;
-		this.size = 1;
 	}
 
 	@Override

@@ -55,6 +55,9 @@ public class QueryParserCISI_CACM extends QueryParser {
 					//System.out.println(fields[i] + " -> " + fields[i].length());
 				} */
 				String id_query = new Integer(fields[0]).toString();
+				System.out.println("------------");
+				System.out.println(fields[1]);
+				System.out.println("------------");
 				String id_doc = new Integer(fields[1]).toString();
 				//System.out.println(id_query + " " + id_doc);
 				queries.get(id_query).putRelevants(id_doc, 1.0);	

@@ -104,13 +104,15 @@ public class Index {
 			if (!this.pred.containsKey(doc.getId())){
 				this.pred.put(doc.getId(), new HashSet<String>());
 			}
-			for (String successeur : doc.get("links").split(";")){
-				if (successeur != ""){
-					this.succ.get(doc.getId()).add(successeur);
-					if (!this.pred.containsKey(successeur)){
-						this.pred.put(successeur, new HashSet<String>());
+			if (doc.get("links") != null){
+				for (String successeur : doc.get("links").split(";")){
+					if (successeur != ""){
+						this.succ.get(doc.getId()).add(successeur);
+						if (!this.pred.containsKey(successeur)){
+							this.pred.put(successeur, new HashSet<String>());
+						}
+						this.pred.get(successeur).add(doc.getId());
 					}
-					this.pred.get(successeur).add(doc.getId());
 				}
 			}
 			doc = this.parser.nextDocument();
@@ -202,6 +204,7 @@ public class Index {
 		System.out.println("Main Index.");
 		
 		if (id.equals("0")) {
+			/*
 			Index indexCisi = new Index("cisi", path, new ParserCISI_CACM(), new Stemmer());
 			String sourcepathCisi = path + "cisi/cisi.txt";
 			String savepathCisi = path + "save/cisi/";
@@ -211,6 +214,11 @@ public class Index {
 			String sourcepathCacm = path + "cacm/cacm.txt";
 			String savepathCacm = path + "save/cacm/";
 			indexCacm.indexation(savepathCacm, sourcepathCacm);
+			*/
+			Index indexEasyCLEF08 = new Index("easyCLEF08", path, new ParserCISI_CACM(), new Stemmer());
+			String sourcepathEasyCLEF08 = path + "easyCLEF08/easyCLEF08_text.txt";
+			String savepathEasyCLEF08 = path + "save/easyCLEF08/";
+			indexEasyCLEF08.indexation(savepathEasyCLEF08, sourcepathEasyCLEF08);
 		}
 		else
 		{

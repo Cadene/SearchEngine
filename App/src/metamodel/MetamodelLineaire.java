@@ -28,12 +28,16 @@ public class MetamodelLineaire extends Metamodel {
 			this.weights[i] = Math.random() * 2 - 1;
 		}
 	}
+	
+	public double[] getWeights(){
+		return this.weights;
+	}
 
 	public void train(ArrayList<Query> queries) throws Exception{
 		double loss = 0;
 		for (int t = 0; t < tmax; t++){
 			Query query = queries.get((int) Math.floor(Math.random() * queries.size()));
-			if (query.getRelevants().size() > 0){
+			if ((query.getRelevants().size() > 0) && query.getRelevants().size() != weighter.getListDocsIds().size()){
 				String idRelevant = (String) query.getRelevants().keySet().toArray()[(int) Math.floor(Math.random() * query.getRelevants().size())];
 				String idNotRelevant = (String) weighter.getListDocsIds().toArray()[(int) Math.floor(Math.random() * weighter.getListDocsIds().size())];
 				while (query.isRelevant(idNotRelevant)){

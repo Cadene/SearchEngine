@@ -21,5 +21,4 @@ public abstract class DocAndQueryFeaturer extends Featurer {
 		}
 		return this.docAndQueryfeatures.get(idDoc).get(query);
 	}
-
 }

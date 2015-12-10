@@ -1,5 +1,4 @@
 
-
 import java.util.ArrayList;
 
 import walk.HITS;
@@ -33,7 +32,7 @@ import indexation.Index;
 import indexation.TextRepresenter;
 import indexation.Stemmer;
 
-public class MainTest {
+public class MainEasyCLEF {
 
 	public static void main(String[] args) throws Exception {
 		// TODO Auto-generated method stub
@@ -42,20 +41,21 @@ public class MainTest {
 		//EvalMeasure measure = new PRMeasure(10);
 		EvalMeasure measure = new APMeasure();
 		
-		Index index = new Index("cacm", path);
+		Index index = new Index("easyCLEF08", path);
 		//Index index = new Index("cisi", path);
 		
-		double paramLangueCACM = 0.11;
-		double paramOkapi_k_CACM = 1.9;
-		double paramOkapi_b_CACM = 0.7;
-
+		double paramLangueEasyCLEF08 = 0.11;
+		double paramOkapi_k_EasyCLEF08 = 1.9;
+		double paramOkapi_b_EasyCLEF08 = 0.7;
+		/*
 		double paramLangueCISI = 0.03;
 		double paramOkapi_k_CISI = 1.8;
 		double paramOkapi_b_CISI = 0.8;
+		*/
 		
-		double paramLangue = paramLangueCACM;
-		double paramOkapi_k = paramOkapi_k_CACM;
-		double paramOkapi_b = paramOkapi_b_CACM;
+		double paramLangue = paramLangueEasyCLEF08;
+		double paramOkapi_k = paramOkapi_k_EasyCLEF08;
+		double paramOkapi_b = paramOkapi_b_EasyCLEF08;
 		/*
 		double paramLangue = paramLangueCISI;
 		double paramOkapi_k = paramOkapi_k_CISI;
@@ -65,7 +65,7 @@ public class MainTest {
 		QueryParser queryParser = new QueryParserCISI_CACM();
 		TextRepresenter stemmer = new Stemmer();
 		
-		queryParser.init(path+"cacm/cacm.qry", path+"cacm/cacm.rel");
+		queryParser.init(path+"easyCLEF08/easyCLEF08_query.txt", path+"easyCLEF08/easyCLEF08.rel");
 		//queryParser.init(path+"cisi/cisi.qry", path+"cisi/cisi.rel");
 		
 		Query query = queryParser.nextQuery();
