@@ -1,0 +1,21 @@
+Loading index from /Vrac/3152691/RI/save/cacm
+Index cacm Loaded
+Modele de langue, lambda 0:0.01:1
+Best Score: 0.4283077111139881
+Best Parameters: 
+0.08
+Modele Okapi, k=1:0.1:2  b=0.7:0.01:0.8
+
+Loading index from /Vrac/3152691/RI/save/cisi
+Index cisi Loaded
+Modele de langue, lambda 0:0.01:1
+Best Score: 0.35079274306166874
+Best Parameters: 
+0.03
+Modele Okapi, k=1:0.1:2  b=0.7:0.01:0.8
+Best Score: 0.27922926752766014
+Best Parameters: 
+1.9000000000000008
+0.72
+modele Okapi
+[0.13961463376383007]
