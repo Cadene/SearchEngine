@@ -32,8 +32,11 @@ public class MainGridSearch {
 		
 		//Index index = new Index("cacm", path);
 		//queryParser.init(path+"cacm/cacm.qry", path+"cacm/cacm.rel");
-		Index index = new Index("cisi", path);
-		queryParser.init(path+"cisi/cisi.qry", path+"cisi/cisi.rel");
+		//Index index = new Index("cisi", path);
+		//queryParser.init(path+"cisi/cisi.qry", path+"cisi/cisi.rel");
+
+		Index index = new Index("easyCLEF08", path);
+		queryParser.init(path+"easyCLEF08/easyCLEF08_query.txt", path+"easyCLEF08/easyCLEF08.rel");
 		
 		Query query = queryParser.nextQuery();
 		ArrayList<Query> queries = new ArrayList<Query>();

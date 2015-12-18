@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import walk.HITS;
 import walk.PageRank;
 import evaluation.APMeasure;
+import evaluation.CRAtN;
 import evaluation.EvalIRModel;
 import evaluation.EvalMeasure;
 import evaluation.PRMeasure;
+import evaluation.PrAtN;
 import evaluation.Query;
 import evaluation.QueryParser;
 import evaluation.QueryParserCISI_CACM;
@@ -39,29 +41,22 @@ public class MainEasyCLEF {
 		String path = "/Vrac/3152691/RI/";
 	
 		//EvalMeasure measure = new PRMeasure(10);
-		EvalMeasure measure = new APMeasure();
+		//EvalMeasure measure = new APMeasure();
+		EvalMeasure measure = new PrAtN(20);
+		//EvalMeasure measure = new CRAtN(20);
 		
 		Index index = new Index("easyCLEF08", path);
 		//Index index = new Index("cisi", path);
 		
-		double paramLangueEasyCLEF08 = 0.11;
-		double paramOkapi_k_EasyCLEF08 = 1.9;
-		double paramOkapi_b_EasyCLEF08 = 0.7;
-		/*
-		double paramLangueCISI = 0.03;
-		double paramOkapi_k_CISI = 1.8;
-		double paramOkapi_b_CISI = 0.8;
-		*/
+		double paramLangueEasyCLEF08 = 0.6;
+		double paramOkapi_k_EasyCLEF08 = 1.6;
+		double paramOkapi_b_EasyCLEF08 = 0.71;
 		
 		double paramLangue = paramLangueEasyCLEF08;
 		double paramOkapi_k = paramOkapi_k_EasyCLEF08;
 		double paramOkapi_b = paramOkapi_b_EasyCLEF08;
-		/*
-		double paramLangue = paramLangueCISI;
-		double paramOkapi_k = paramOkapi_k_CISI;
-		double paramOkapi_b = paramOkapi_b_CISI;
-		*/
 		
+		//QueryParser queryParser = new QueryParserCISI_CACM();
 		QueryParser queryParser = new QueryParserCISI_CACM();
 		TextRepresenter stemmer = new Stemmer();
 		
@@ -77,6 +72,7 @@ public class MainEasyCLEF {
 
 		Weighter weighterVectTfInd1 = new WeighterTfInd(index);
 		IRModel modelVectTfInd1 = new Vectoriel(weighterVectTfInd1, false);
+		//EvalIRModel evalModelVectTfInd1 = new EvalIRModel(modelVectTfInd1, measure, queries, stemmer);
 		EvalIRModel evalModelVectTfInd1 = new EvalIRModel(modelVectTfInd1, measure, queries, stemmer);
 		evalModelVectTfInd1.eval();
 		System.out.println("modele Vectoriel Tf-presence");

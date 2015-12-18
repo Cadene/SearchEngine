@@ -42,5 +42,11 @@ public class IRList {
 		return this.docs.size();
 	}
 	
+	public Integer getIdSubtopic(String doc){
+		return this.query.getIdSubtopic(doc);
+	}
 	
+	public int getNbSubtopics(){
+		return this.query.getNbSubtopics();
+	}
 }

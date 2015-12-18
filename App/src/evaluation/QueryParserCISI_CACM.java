@@ -53,14 +53,17 @@ public class QueryParserCISI_CACM extends QueryParser {
 				String[] fields = line.replaceFirst("^\\D+","").split("\\s+");
 				/* for (int i=0; i<fields.length; i++){
 					//System.out.println(fields[i] + " -> " + fields[i].length());
-				} */
+				} */		
 				String id_query = new Integer(fields[0]).toString();
-				System.out.println("------------");
-				System.out.println(fields[1]);
-				System.out.println("------------");
 				String id_doc = new Integer(fields[1]).toString();
-				//System.out.println(id_query + " " + id_doc);
-				queries.get(id_query).putRelevants(id_doc, 1.0);	
+				if (fields.length > 2){
+					Double relevance = new Double(fields[2]);
+					Integer id_subtopic = new Integer(fields[3]);
+					queries.get(id_query).putRelevants(id_doc, relevance, id_subtopic);
+				}
+				else{
+					queries.get(id_query).putRelevants(id_doc, 1.0);
+				}
 			}
 			reader.close();
 		} catch (IOException e) {
