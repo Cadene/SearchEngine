@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.util.HashMap;
 
 public class WeighterTfInd extends Weighter {
-
+	
 	public WeighterTfInd(Index index) {
 		super(index);
 		// TODO Auto-generated constructor stub

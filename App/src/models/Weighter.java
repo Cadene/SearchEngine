@@ -29,6 +29,10 @@ public abstract class Weighter {
 		return index.getListDocsIds();
 	}
 	
+	public Set<String> getListStemsIds() {
+		return index.getListStemsIds();
+	}
+	
 	public Double getNormForDoc(String docId) throws ClassNotFoundException, IOException{
 		if (!this.normWeightsForDocs.containsKey(docId)){
 			HashMap<String, Double> weightsForDocs = this.getDocWeightsForDoc(docId);				

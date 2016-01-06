@@ -188,6 +188,11 @@ public class Index {
 		return this.docs.keySet();
 	}
 	
+	public Set<String> getListStemsIds()
+	{
+		return this.stems.keySet();
+	}
+	
 	public HashMap<String, Set<String>> getSucc(){
 		return this.succ;
 	}
