@@ -39,6 +39,9 @@ public class EvalIRModel {
 	public double eval() throws Exception {
 		ArrayList<ArrayList<Double>> rslt = new ArrayList<ArrayList<Double>>();
 		for (int id_qu = 0; id_qu < this.queries.size(); id_qu++) {
+			if (id_qu % 10 == 0){
+				System.out.println(1. * id_qu / this.queries.size());
+			}
 			Query query = this.queries.get(id_qu);
 			if (query.getRelevants().size() != 0){
 				HashMap<String, Integer> quStems = this.stemmer.getTextRepresentation(this.queries.get(id_qu).get("text"));

@@ -1,11 +1,15 @@
 
 import java.util.ArrayList;
 
-import net.sf.javaml.clustering.Clusterer;
 import net.sf.javaml.clustering.KMeans;
-import diversite.SizeClustering;
+import diversite.ClusteringNbDocsC;
+import diversite.ClusteringNbDocsD;
+import diversite.ClusteringRang;
+import diversite.ClusteringSimilarity;
+import diversite.Glouton;
 import walk.HITS;
 import walk.PageRank;
+import weka.clusterers.SimpleKMeans;
 import evaluation.APMeasure;
 import evaluation.CRAtN;
 import evaluation.EvalIRModel;
@@ -45,8 +49,8 @@ public class MainEasyCLEFDiv {
 	
 		//EvalMeasure measure = new PRMeasure(10);
 		//EvalMeasure measure = new APMeasure();
-		EvalMeasure measure = new PrAtN(20);
-		//EvalMeasure measure = new CRAtN(20);
+		//EvalMeasure measure = new PrAtN(20);
+		EvalMeasure measure = new CRAtN(20);
 		
 		Index index = new Index("easyCLEF08", path);
 		//Index index = new Index("cisi", path);
@@ -73,17 +77,38 @@ public class MainEasyCLEFDiv {
 			query = queryParser.nextQuery();
 		}
 
-		Weighter weighterVectTfInd1 = new WeighterTfInd(index);
-		IRModel modelVectTfInd1 = new Vectoriel(weighterVectTfInd1, true);
-		Clusterer kmeans = new KMeans();
-		IRModel modelDiversite = new SizeClustering(weighterVectTfInd1, modelVectTfInd1, kmeans);
+		int numberOfDocs = 50;
+		
+		SimpleKMeans kmeans = new SimpleKMeans();
+		String[] options = "-N 1 -I 100 -O -fast".split(" ");
+		/*String[] options = new String[7];
+		options[0] = "-N";                	// number of clusters
+		options[1] = "3";
+		options[2] = "-I";					// number of iterations
+		options[3] = "50";
+		options[4] = "-fast";				// fast
+		options[6] = "-num-slots";			// number of threads
+		options[7] = "8";*/
+		kmeans.setOptions(options);
+		
+		Weighter weighterVectTfTf = new WeighterTfTf(index);
+		IRModel modelVectTfTf = new Vectoriel(weighterVectTfTf, true);
+		
+		//Weighter weighterVectTfInd1 = new WeighterTfInd(index);
+		//IRModel modelVectTfInd1 = new Vectoriel(weighterVectTfInd1, true);
+		
+		IRModel modelDiversite = new ClusteringRang(weighterVectTfTf, modelVectTfTf, kmeans, numberOfDocs);
 		//EvalIRModel evalModelVectTfInd1 = new EvalIRModel(modelVectTfInd1, measure, queries, stemmer);
-		EvalIRModel evalModelVectTfInd1 = new EvalIRModel(modelDiversite, measure, queries, stemmer);
-		evalModelVectTfInd1.eval();
-		System.out.println("modele Vectoriel Tf-presence avec diversite");
-		System.out.println(evalModelVectTfInd1.getMean());
+		EvalIRModel evalModelKmeansVectTfTf = new EvalIRModel(modelDiversite, measure, queries, stemmer);
+		evalModelKmeansVectTfTf.eval();
+		System.out.println("modele Vectoriel Tf-presence avec diversite clustering");
+		System.out.println(evalModelKmeansVectTfTf.getMean());
 		//System.out.println(evalModel.getStd());
 		
-		
+		IRModel glouton = new Glouton(weighterVectTfTf, modelVectTfTf, 60, .7);
+		EvalIRModel evalModelGloutonVectTfTf = new EvalIRModel(glouton, measure, queries, stemmer);
+		evalModelGloutonVectTfTf.eval();
+		System.out.println("modele Vectoriel Tf-presence avec diversite glouton");
+		System.out.println(evalModelGloutonVectTfTf.getMean());
 	}
 }

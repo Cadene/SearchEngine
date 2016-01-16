@@ -24,7 +24,6 @@ public class CRAtN extends EvalMeasure {
 			}
 		}
 		toRet.add(new Double(clustersRetrouves.size()) / l.getNbSubtopics());
-		
 		return toRet;
 	}
 	

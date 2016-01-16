@@ -5,6 +5,19 @@ import java.util.Comparator;
 import java.util.Random;
 
 public final class ArrayUtils {
+	
+	public static double cosinus(double[] a, double[] b){
+		double cos = 0;
+		double norma = 0;
+		double normb = 0;
+		for (int i = 0; i < a.length; i++){
+			norma += a[i]*a[i];
+			normb += b[i]*b[i];
+			cos += a[i] * b[i];
+		}
+		return cos / (Math.sqrt(norma) + Math.sqrt(normb));
+	}
+	
     public static int[] argsort(final float[] a) {
         return argsort(a, true);
     }
@@ -23,6 +36,20 @@ public final class ArrayUtils {
         return asArray(indexes);
     }
 
+    public static int[] argsort(final double[] a, final boolean ascending) {
+        Integer[] indexes = new Integer[a.length];
+        for (int i = 0; i < indexes.length; i++) {
+            indexes[i] = i;
+        }
+        Arrays.sort(indexes, new Comparator<Integer>() {
+            @Override
+            public int compare(final Integer i1, final Integer i2) {
+                return (ascending ? 1 : -1) * Double.compare(a[i1], a[i2]);
+            }
+        });
+        return asArray(indexes);
+    }
+    
     public static <T extends Number> int[] asArray(final T... a) {
         int[] b = new int[a.length];
         for (int i = 0; i < b.length; i++) {
